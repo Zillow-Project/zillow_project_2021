@@ -10,7 +10,7 @@ def get_connection(db, user=env.user, host=env.host, password=env.password):
     
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
     
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def get_zillow_data():
     '''
@@ -22,7 +22,7 @@ def get_zillow_data():
 
                         FROM   properties_2017 prop  
                                INNER JOIN (SELECT parcelid,
-                                                  Max(logerror),
+                                                  logerror,
                                                   Max(transactiondate) transactiondate 
                                            FROM   predictions_2017 
                                            GROUP  BY parcelid, logerror) pred
