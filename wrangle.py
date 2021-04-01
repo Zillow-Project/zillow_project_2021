@@ -19,7 +19,6 @@ def get_zillow_data():
     
     df = pd.read_sql('''
                         SELECT *
-
                         FROM   properties_2017 prop  
                                INNER JOIN (SELECT parcelid,
                                                   logerror,
@@ -41,11 +40,7 @@ def get_zillow_data():
                                AND propertylandusetypeid between 260 AND 266
                                OR propertylandusetypeid between 273 AND 279
                                AND NOT propertylandusetypeid = 274
-                               AND unitcnt = 1;
-
-                        ''', get_connection('zillow'))
-    
-    
+                               AND unitcnt = 1;''', get_connection('zillow'))
     return df
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
