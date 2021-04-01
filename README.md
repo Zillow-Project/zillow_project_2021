@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 # Zillow Log Error Project
 
 # <a name="top"></a>Finding Log Error for Zillow - README.md
-![image-description-here](image-link-here)
+![Zillow Logo](https://github.com/Zillow-Project/zillow_project_2021/blob/main/Caitlyn/photos/Screen%20Shot%202021-04-01%20at%205.57.59%20PM.png?raw=true)
 ​
 ***
 [[Project Description](#project_description)]
@@ -22,16 +21,18 @@ ___
 
 <details>
   <summary>Click to expand!</summary>
-    
-- The purpose 
-- 
-​
-## Goals
-​
-The goals of the project are to answer the questions and deliver the following:
-​
-- List of goals
-​
+
+### Description
+- Log error is based on our Zestimate price minus the actual sales price of a home, and then we take the log of the difference. But what is causing our errors? Thats what we are here to find out!
+
+### Goals
+- Uncovering what the drivers of the error in the Zestimate.
+- Utilize clustering models to find these drivers.
+- Presenting our finding to the Zillow data science team.
+
+### Where did you get the data?
+- Within the Zillow database found in the Codeup Sequel server, we joined specific tables onto our main data set (properties_2017). We also made specific parameters, within sequel, to fit our teams needs for this project.
+
 </details>
     
     
@@ -39,10 +40,11 @@ The goals of the project are to answer the questions and deliver the following:
 [[Back to top](#top)]
 <details>
   <summary>Click to expand!</summary>
-​
+
 ### Projet Outline:
+    
 - Acquisiton of data through Codeup SQL Server, using env.py file with username, password, and host
-- Prepare and clean data with python - Jupyter Labs Notebook
+- Prepare and clean data with python - Jupyter Labs
 - Explore data
     - if value are what the dictionary says they are
     - null values
@@ -50,25 +52,20 @@ The goals of the project are to answer the questions and deliver the following:
     - categorical or continuous values
     - Make graphs that show 
 - Run statistical analysis
-- Model data 
-- Test Data
-- Conclude results
+- Modeling
+    - Make multiple models
+    -Pick best model
+    - Test Data
+    - Conclude results
         
 ### Hypothesis
-- Input hypothesis of entire project (anticipated outcomes, models, statistics, etc)
-​
+- Living in Los Angeles may be causing log error because of majorly different economic standings within the area.
+- Latitude and Longitude are drivers of log error because one home may be in the hills, another may be on the coast, another may be in the dessert.
+- Homes with heating systems are drivers of log error, because normally it is important but in southern California it is just nice to have but not a necessity.
+
 ### Target variable
-- What are you trying to predict or analyze
-​
-### Need to haves:
-- Requirements for completing report
-​
-### Nice to haves:
-- If you have time, what will you include.
-​
-***
-​
-​
+- logerror
+
 </details>
 
     
@@ -345,31 +342,5 @@ What would you do with more time?
 ​
 Anything else of note worth adding? Add it here.
 </details>  
-=======
-# zillow_project_2021
 
-# README Specs:
-
-Aggregated Feedback for the Classification Projects:
-Clarifying the Purpose of Documents in the Project:
-
-Readme – gives an abstract or summary of your notebook, it should include findings, a data dictionary, and a brief overview of your process. This should entice the reader to want to read your notebook to get the full analysis.
-
-Notebook – justify your conclusions by showing the process you followed to obtain the results that you did. Be explicit about why you chose the features you did, how you created your baseline, what your modeling process is and clearly identify your Test model
- (Repeatability is key)
-
-Data Dictionary – Remove ambiguity in your feature names. Not Provide dictionary definitions for terms in your analysis. What I mean by not provide dictionary definitions is that a data dictionary is not about capturing the "true" meaning of the words in each featured title but showing how those words should be interpreted in the context of the analysis. For example, the word partner in google can mean either of a "pair of people engaged together in the same activity" among its other definitions. In the case of the Telco data partner likely means a romantic partner, in other data sets partner, could mean a business or tag-team partner. A good data dictionary goes beyond dictionary definitions and clears away any ambiguity in how the author of the notebook interprets the features he or she is using in the analysis
-It is okay to assume that the reader of the notebook knows the definition of data science terms (or at least has access to google search). Data dictionaries are there to clear up ambiguities that can’t be solved by Google search.
-Other feedback:
-
-Always mention outliers and what you did or didn’t do with them.
-
-Try to pair your takeaways with the individual chart or test it came from. Don’t show a bunch of charts and then list the takeaways from all of them. It makes seeing where your observations come from difficult to follow.
-
-Try to title your chart with the takeaway you want the reader to get from the chart.
-Don’t just add rubric items for the sake of checking a box (charts and hypotheses testing). Read incorporate this item into your analysis in a meaningful way.
-
-
-
-# We are intrested in Logerror for our target in the project (zestimate - sales_price)log, This will be used to predict the actual values of homes, trying to predict the error (residual plots, contiuoius variable).
 >>>>>>> 830abb2caace838ee123d39b05941c29bd854ee2
