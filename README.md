@@ -6,6 +6,7 @@
 ***
 [[Project Description](#project_description)]
 [[Project Planning](#planning)]
+[[Acquire & Prep](#acquire_and_prep)]
 [[Key Findings](#findings)]
 [[Data Dictionary](#dictionary)]
 [[Data Acquire and Prep](#wrangle)]
@@ -66,6 +67,28 @@ ___
 ### Target variable
 - logerror
 
+</details>
+
+## <a name="acquire_and_prep"></a>Acquire & Prep:
+[[Back to top](#top)]
+
+<details>
+  <summary>Click to expand!</summary>
+​
+### Explore:
+- What are your key findings from explore?
+​
+​
+### Stats
+- What are your key findings from stats?
+​
+### Modeling:
+- Model results?
+​
+​
+***
+​
+    
 </details>
 
     
@@ -343,4 +366,5 @@ What would you do with more time?
 Anything else of note worth adding? Add it here.
 </details>  
 
->>>>>>> 830abb2caace838ee123d39b05941c29bd854ee2
+>>>>>>>>>>>>>>>
+.
