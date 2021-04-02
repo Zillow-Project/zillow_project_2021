@@ -5,7 +5,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from scipy import stats
 
-def train_validate_test_split(df, target, seed=123):
+def train_validate_test_split(df, seed=123):
     '''
     This function takes in a dataframe, the name of the target variable
     (for stratification purposes), and an integer for a setting a seed

@@ -175,39 +175,29 @@ def data_prep(df, cols_to_remove=[], prop_required_column=.5, prop_required_row=
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def data_split(df, stratify_by='taxvaluedollarcnt'):
+def train_validate_test_split(df, seed=123):
     '''
-    this function takes in a dataframe and splits it into 3 samples, 
-    a test, which is 20% of the entire dataframe, 
-    a validate, which is 24% of the entire dataframe,
-    and a train, which is 56% of the entire dataframe. 
-    It then splits each of the 3 samples into a dataframe with independent variables
-    and a series with the dependent, or target variable. 
-    The function returns 3 dataframes and 3 series:
-    X_train (df) & y_train (series), X_validate & y_validate, X_test & y_test. 
+    This function takes in a dataframe, the name of the target variable
+    (for stratification purposes), and an integer for a setting a seed
+    and splits the data into train, validate and test. 
+    Test is 20% of the original dataset, validate is .30*.80= 24% of the 
+    original dataset, and train is .70*.80= 56% of the original dataset. 
+    The function returns, in this order, train, validate and test dataframes. 
     '''
-    # split df into test (20%) and train_validate (80%)
-    train_validate, test = train_test_split(df, test_size=.2, random_state=123)
+    train_validate, test = train_test_split(df, test_size=0.2, 
+                                            random_state=seed, 
+                                            # stratify=df[target]
+                                           )
+    train, validate = train_test_split(train_validate, test_size=0.3, 
+                                       random_state=seed,
+                                       # stratify=train_validate[target]
+                                      )
+    return train, validate, test
 
-    # split train_validate off into train (70% of 80% = 56%) and validate (30% of 80% = 24%)
-    train, validate = train_test_split(train_validate, test_size=.3, random_state=123)
-    # split train into X (dataframe, drop target) & y (series, keep target only)
-    X_train = train.drop(columns=['taxvaluedollarcnt'])
-    y_train = train['taxvaluedollarcnt']
-    
-    # split validate into X (dataframe, drop target) & y (series, keep target only)
-    X_validate = validate.drop(columns=['taxvaluedollarcnt'])
-    y_validate = validate['taxvaluedollarcnt']
-    
-    # split test into X (dataframe, drop target) & y (series, keep target only)
-    X_test = test.drop(columns=['taxvaluedollarcnt'])
-    y_test = test['taxvaluedollarcnt']
-    
-    return X_train, y_train, X_validate, y_validate, X_test, y_test
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def minmax_scale(X_train, X_validate, X_test):
+def minmax_scale(train, validate, test):
     
     # Make the thing
     scaler = sklearn.preprocessing.MinMaxScaler()
@@ -215,17 +205,17 @@ def minmax_scale(X_train, X_validate, X_test):
     # We fit on the training data
     # in a way, we treat our scalers like our ML models
     # we only .fit on the training data
-    scaler.fit(X_train)
+    scaler.fit(train)
     
-    train_scaled = scaler.transform(X_train)
-    validate_scaled = scaler.transform(X_validate)
-    test_scaled = scaler.transform(X_test)
+    train_scaled = scaler.transform(train)
+    validate_scaled = scaler.transform(validate)
+    test_scaled = scaler.transform(test)
     
     # turn the numpy arrays into dataframes
-    X_train = pd.DataFrame(train_scaled, columns=X_train.columns)
-    X_validate = pd.DataFrame(validate_scaled, columns=X_train.columns)
-    X_test = pd.DataFrame(test_scaled, columns=X_train.columns)
+    train = pd.DataFrame(train_scaled, columns=train.columns)
+    validate = pd.DataFrame(validate_scaled, columns=train.columns)
+    test = pd.DataFrame(test_scaled, columns=train.columns)
     
-    return X_train, X_validate, X_test
+    return train, validate, test
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

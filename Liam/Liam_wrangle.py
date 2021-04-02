@@ -329,9 +329,6 @@ def scale_my_data(train, validate, test, scale_columns):
     return train_scaled, validate_scaled, test_scaled
 
 
-
-
-
 def null_tables(df):
     '''This function will take in a df
     counts the number of missing features
