@@ -148,7 +148,7 @@ def clean_zillow(df):
     # set index as parcelid
     df = df.set_index('parcelid')
     # finish dropping
-    df = df.drop(['Unnamed: 0', 'yearbuilt'], axis=1)
+    df = df.drop(['yearbuilt'], axis=1)
     # Handle outliers
     df = df[df.tax_value < 1153326.5]
     df = df[df.square_feet < 4506.0]
@@ -186,8 +186,6 @@ def split_zillow(df):
                                        random_state=1234)
     return train, validate, test
 
-
-<<<<<<< HEAD
 def train_validate_test_split(df, seed=123):
     '''
     This function takes in a dataframe, the name of the target variable
@@ -230,7 +228,7 @@ def minmax_scale(train, validate, test):
     test = pd.DataFrame(test_scaled, columns=train.columns)
     
     return train, validate, test
-=======
+
 # Split the data into X_train, y_train, X_vlaidate, y_validate, X_train, and y_train
 
 def split_train_validate_test(train, validate, test):
@@ -249,7 +247,7 @@ def split_train_validate_test(train, validate, test):
 
 # Scale the Data
 
->>>>>>> 7c795c82900d5277cb8399f1e4e7d145ad87e744
+
 
 def scale_my_data(train, validate, test):
     scale_columns = ['bathrooms', 'bedrooms', 'quality', 
