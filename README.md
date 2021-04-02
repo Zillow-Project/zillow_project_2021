@@ -6,10 +6,9 @@
 ***
 [[Project Description](#project_description)]
 [[Project Planning](#planning)]
-[[Acquire & Prep](#acquire_and_prep)]
 [[Key Findings](#findings)]
 [[Data Dictionary](#dictionary)]
-[[Data Acquire and Prep](#wrangle)]
+[[Acquire & Prep](#acquire_and_prep)]
 [[Data Exploration](#explore)]
 [[Statistical Analysis](#stats)]
 [[Modeling](#model)]
@@ -69,28 +68,6 @@ ___
 
 </details>
 
-## <a name="acquire_and_prep"></a>Acquire & Prep:
-[[Back to top](#top)]
-
-<details>
-  <summary>Click to expand!</summary>
-​
-### Explore:
-- What are your key findings from explore?
-​
-​
-### Stats
-- What are your key findings from stats?
-​
-### Modeling:
-- Model results?
-​
-​
-***
-​
-    
-</details>
-
     
 ## <a name="findings"></a>Key Findings:
 [[Back to top](#top)]
@@ -119,23 +96,93 @@ ___
 
 <details>
   <summary>Click to expand!</summary>
-​
+
 ### Data Used
----
+    
 | Attribute | Definition | Data Type |
 | ----- | ----- | ----- |
-| feature_name1 | What does the feature measure of categorize? | int/object/float/string | 
-| feature_name2 | What does the feature measure of categorize? | int/object/float/string 
-| feature_name3 | What does the feature measure of categorize? | int/object/float/string 
-| feature_name4* | What does the feature measure of categorize? | int/object/float/string 
+| tax_value | The total tax assessed value of the parcel | float  |
+| bathrooms | Number of bathrooms in home including fractional bathrooms | float |
+| bedrooms | Number of bedrooms in home | float |
+| city |   City in which the property is located (if any) | float |
+| county |   County in which the property is located) | float |
+| fips |   Federal Information Processing Standard code -  see https://en.wikipedia.org/wiki/FIPS_county_code for more details | float |
+| house_age | year_built minus current year | int |
+| latitude | Latitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |
+| longitude | Longitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |
+| square_feet | Calculated total finished living area of the home | float |
+| taxamount	|  The total property tax assessed for that assessment year | int |
+| untcnt |   Number of units the structure is built into (i.e. 2 = duplex, 3 = triplex, etc...) | int |
+| has_heating_system |  If the house has a heating system or not | int |
+| land_type |  Type of land use the property is zoned for | float |
+| quality |   Overall assessment of condition of the building from best (lowest) to worst (highest) | float |
+| has_fireplace |  If the house has a fireplace or not | int |
+| full_bathrooms |  Number of full bathrooms (sink, shower + bathtub, and toilet) present in home | int |
+| lot_square_feet |   Area of the lot in square feet | float |
+| has_pool |  If the house has a pool or not | float |
+| room_count |  Total number of rooms in the principal residence | float |
+| structure_tax_value |  The assessed value of the built structure on the parcel | float |
+| land_tax_value | The assessed value of the land area of the parcel  | float |
+| logerror* |  The log of the zestimate minus actual sold price of house | float |    
+| in_los_angeles |  If the house is in Los Angeles or not | int |
+| in_orange_county |  If the house is in Orange County or not | int |    
+| in_ventura |  If the house is in Ventura or not | int |
+| tax_rate |  Rate of tax in the area | float |   
+| level_of_log_error |  The log of the zestimate minus actual sold price of house binned| category |
+| acres  |  How many acres the property has | float |       
+| square_feet_bins |  Calculated total finished living area of the home binned | int | 
+| lot_sqft_bins |  Area of the lot in square feet binned. | int |     
+| acre_bins |  How many acres the property has binned | int |    
+ 
+
+    
+\*  Indicates the target feature in this Zillow data.
+
+***
+</details>
+
+## <a name="acquire_and_prep"></a>Acquire & Prep:
+[[Back to top](#top)]
+
+<details>
+  <summary>Click to expand!</summary>
+
+### Acquire Data:
+- Gather data from zillow database in the Codeup Sequel server.
+    - Code to do this can be found in the wrangle.py file under the `get_zillow_data()` function
+
+### Prepare Data
+- To clean the data we had to:
+    - Dop columns and rows with 50% or more null values 
+    - Replace NULL values
+    - Encode features
+    - Create new features
+    - Drop features
+    - Rename features
+    - Turn some features into binary features
+    - Change some features to int64
+    - Handle Outliers
+    - Bin some larger features
+- From here we :
+    - Split the data into train, validate, and test
+    - Split train, validate, and test into X and y
+    - Scaled the data
+
+​
+| Function Name | Purpose |
+| ----- | ----- |
+| acquire_functions | DOCSTRING | 
+| prepare_functions | DOCSTRING | 
+| wrangle_functions() | DOCSTRING |
 ​
 ***
 ​
-\* - Indicates the target feature in this Zillow data.
-​
-​
-***
-​
+
+    
+</details>
+
+    
+    
 ## <a name="wrangle"></a>Data Acquisition and Preparation
 [[Back to top](#top)]
 ​
