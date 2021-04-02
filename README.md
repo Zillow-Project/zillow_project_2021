@@ -181,25 +181,7 @@ ___
     
 </details>
 
-    
-    
-## <a name="wrangle"></a>Data Acquisition and Preparation
-[[Back to top](#top)]
-​
-### Acquisition and Preparation
-- Did you use a wrangle?  acquire and prepare files?
-- 
-​
-| Function Name | Purpose |
-| ----- | ----- |
-| acquire_functions | DOCSTRING | 
-| prepare_functions | DOCSTRING | 
-| wrangle_functions() | DOCSTRING |
-​
-***
-​
-    
-</details>
+
 
 ## <a name="explore"></a>Data Exploration:
 [[Back to top](#top)]
