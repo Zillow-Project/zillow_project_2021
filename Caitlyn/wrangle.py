@@ -63,6 +63,7 @@ def drop_50_pct_null(df):
 def clean_zillow(df):
     '''This function takes in the df
     applies all the cleaning funcitons previously created
+    creates features
     drops columns
     renames columns'''
     # assuming null value for pool and fireplacecnt means none
