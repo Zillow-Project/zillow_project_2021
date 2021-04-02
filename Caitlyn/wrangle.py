@@ -1,42 +1,64 @@
-from env import host, user, password
+import env
 import pandas as pd
-import numpy as np
-from scipy import stats
-from math import sqrt
-from statsmodels.formula.api import ols
 
-from sklearn.metrics import mean_squared_error, r2_score, explained_variance_score, mean_absolute_error
+import pandas as pd
+import sklearn.preprocessing
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import f_regression 
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def acquire_zillow():
+def get_connection(db, user=env.user, host=env.host, password=env.password):
+    
+    return f'mysql+pymysql://{user}:{password}@{host}/{db}'
+    
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Acquire
+def get_zillow_data():
     '''
-    Grab data from Codeup SQL server
+    Grab our data from path and read as dataframe
     '''
-    sql_query = '''select *
-    from properties_2017
-    left join airconditioningtype using(airconditioningtypeid)
-    left join architecturalstyletype using(architecturalstyletypeid)
-    left join buildingclasstype using(buildingclasstypeid)
-    left join heatingorsystemtype using(heatingorsystemtypeid)
-    left join storytype using(storytypeid)
-    left join typeconstructiontype using(typeconstructiontypeid)
-    join (select parcelid, max(logerror) as logerror, max(transactiondate) as transactiondate
-                from predictions_2017
-                group by parcelid) as pred_17 using(parcelid)
-    where transactiondate like '2017-%%-%%'
-        and parcelid in(
-            select distinct parcelid)
-            and latitude is not null
-                and longitude is not null;'''
-    # make the connection to codeup sequel server
-    connection = f'mysql+pymysql://{user}:{password}@{host}/zillow'
-    # Assign the df
-    df = pd.read_sql(sql_query, connection)
+    
+    df = pd.read_sql('''
+                        SELECT *
+                        FROM   properties_2017 prop  
+                               INNER JOIN (SELECT parcelid,
+                                                  logerror,
+                                                  Max(transactiondate) transactiondate 
+                                           FROM   predictions_2017 
+                                           GROUP  BY parcelid, logerror) pred
+                                       USING (parcelid) 
+                               LEFT JOIN airconditioningtype air USING (airconditioningtypeid) 
+                               LEFT JOIN architecturalstyletype arch USING (architecturalstyletypeid) 
+                               LEFT JOIN buildingclasstype build USING (buildingclasstypeid) 
+                               LEFT JOIN heatingorsystemtype heat USING (heatingorsystemtypeid) 
+                               LEFT JOIN propertylandusetype landuse USING (propertylandusetypeid) 
+                               LEFT JOIN storytype story USING (storytypeid) 
+                               LEFT JOIN typeconstructiontype construct USING (typeconstructiontypeid) 
+                       WHERE transactiondate like '2017-%%-%%'
+                               AND prop.latitude IS NOT NULL
+                               AND prop.longitude IS NOT NULL
+                               
+                               AND propertylandusetypeid between 260 AND 266
+                               OR propertylandusetypeid between 273 AND 279
+                               AND NOT propertylandusetypeid = 274
+                               AND unitcnt = 1;''', get_connection('zillow'))
     return df
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Prepare
+
+def drop_50_pct_null(df):
+    '''This function takes in the zillow df
+    removes all columns and rows with 50% nulls or more
+    returns df'''
+    # Drop columns with 50% or more missing values
+    df = df.dropna(axis = 1, thresh = 0.5 * len(df.index))
+    # went from 67 columns down to 33
+    # drop rows with 50% or more missing vlaues
+    df.dropna(axis = 0, thresh = 0.5 * len(df.columns))
+        # ended up not dropping any rows 
+            # will remain in the function in case anything were to change later on
+    return df
 
 def clean_zillow(df):
     '''This function takes in the df
@@ -45,11 +67,10 @@ def clean_zillow(df):
     renames columns'''
     # assuming null value for pool means no pool
     df.poolcnt.fillna(0, inplace = True)
-    # assuming null calie for fireplace means no pool
+    # assuming null calie for fireplace means no null
     df.fireplacecnt.fillna(0, inplace = True)
-    df = only_one_unit_homes(df)
+    # drop features/rows with more than 50% null values
     df = drop_50_pct_null(df)
-  
     # create dummy variables and add them to the df
     dummy_df =  pd.get_dummies(df['fips'])
     dummy_df.columns = ['in_los_angeles', 'in_orange_county', 'in_ventura']
@@ -71,7 +92,7 @@ def clean_zillow(df):
                  'heatingorsystemdesc', 'transactiondate',
                   'finishedsquarefeet12', 'id', 'censustractandblock',
                  'rawcensustractandblock', 'calculatedbathnbr', 
-                 'assessmentyear'], axis=1)
+                 'assessmentyear', 'propertylandusedesc'], axis=1)
     #rename features
     df = df.rename(columns={'heatingorsystemtypeid':'has_heating_system', 
                            'bathroomcnt':'bathrooms', 'bedroomcnt':'bedrooms', 
@@ -131,26 +152,13 @@ def clean_zillow(df):
     df['in_ventura'] = (df['in_ventura'] == True ).astype(int)
     # set index as parcelid
     df = df.set_index('parcelid')
+    # drop random column that came up
+    df = df.drop(['Unnamed: 0'], axis=1)
     return df
 
-def missing_zero_values_table(df):
-        zero_val = (df == 0.00).astype(int).sum(axis=0)
-        null_count = df.isnull().sum()
-        mis_val_percent = 100 * df.isnull().sum() / len(df)
-        mz_table = pd.concat([zero_val, null_count, mis_val_percent], axis=1)
-        mz_table = mz_table.rename(
-        columns = {0 : 'Zero Values', 1 : 'null_count', 2 : '% of Total Values'})
-        mz_table['Total Zeroes + Null Values'] = mz_table['Zero Values'] + mz_table['null_count']
-        mz_table['% Total Zero + Null Values'] = 100 * mz_table['Total Zeroes + Null Values'] / len(df)
-        mz_table['Data Type'] = df.dtypes
-        mz_table = mz_table[
-            mz_table.iloc[:,1] >= 0].sort_values(
-        '% of Total Values', ascending=False).round(1)
-        print ("Your selected dataframe has " + str(df.shape[1]) + " columns and " + str(df.shape[0]) + " Rows.\n"      
-            "There are " +  str((mz_table['null_count'] != 0).sum()) +
-          " columns that have NULL values.")
-#         mz_table.to_excel('D:/sampledata/missing_and_zero_values.xlsx', freeze_panes=(1,0), index = False)
-        return mz_table
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Split the Data into Tain, Test, and Validate.
 
 def split_zillow(df):
     '''This fuction takes in a df 
@@ -163,6 +171,24 @@ def split_zillow(df):
                                        random_state=1234)
     return train, validate, test
 
+
+# Split the data into X_train, y_train, X_vlaidate, y_validate, X_train, and y_train
+
+def split_train_validate_test(train, validate, test):
+    ''' This function takes in train, validate and test
+    splits them into X and y versions
+    returns X_train, X_validate, X_test, y_train, y_validate, y_test'''
+    X_train = train.drop(columns = ['appraised_value'])
+    y_train = train.appraised_value
+    X_validate = validate.drop(columns=['appraised_value'])
+    y_validate = validate.appraised_value
+    X_test = test.drop(columns=['appraised_value'])
+    y_test = test.appraised_value
+    return X_train, X_validate, X_test, y_train, y_validate, y_test
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Scale the Data
 
 scale_columns = ['bathrooms', 'bedrooms', 'quality', 
                   'square_feet', 'full_bathrooms', 
@@ -180,68 +206,3 @@ def scale_my_data(train, validate, test, scale_columns):
     validate_scaled = scaler.transform(validate[scale_columns])
     test_scaled = scaler.transform(test[scale_columns])
     return train_scaled, validate_scaled, test_scaled
-
-
-
-
-
-def null_tables(df):
-    '''This function will take in a df
-    counts the number of missing features
-    counts the number of missing rows
-    finds the percent of missing columns
-    returns a table with each of theses are features'''
-    # Gotta set up the new Dataframes info
-    table_nulls = df.isnull().sum(axis =1).value_counts().sort_index(ascending=False)
-    # Make it into an officail df
-    table_nulls = pd.DataFrame(table_nulls)
-    # reset the index
-    table_nulls.reset_index(level=0, inplace=True)
-    # create the columns num_cols_missing and num_rows_missing
-    table_nulls.columns= ['num_cols_missing', 'num_rows_missing']
-    # now I need to add the percent column
-    table_nulls['pct_cols_missing']= round((table_nulls.num_cols_missing /df.shape[1]) * 100, 2)
-    return table_nulls
-
-def only_one_unit_homes(df):
-    '''This function takes in the zillow df
-    removes rows where the propertylandusetype id is not a single unite
-    returns a new df'''
-    # Remove rows where propertylandusetypeid is less than 260
-    clean_it = df.loc[df['propertylandusetypeid'] < 260].index
-    df.drop(clean_it , inplace=True)
-    # Remove rows where propertylandusetypeid is 267
-    clean_it = df.loc[df['propertylandusetypeid'] == 267].index
-    df.drop(clean_it , inplace=True)
-        # Remove rows where propertylandusetypeid is 267
-    clean_it = df.loc[df['propertylandusetypeid'] == 268].index
-    df.drop(clean_it , inplace=True)
-        # Remove rows where propertylandusetypeid is 267
-    clean_it = df.loc[df['propertylandusetypeid'] == 269].index
-    df.drop(clean_it , inplace=True)
-        # Remove rows where propertylandusetypeid is 267
-    clean_it = df.loc[df['propertylandusetypeid'] == 270].index
-    df.drop(clean_it , inplace=True)
-        # Remove rows where propertylandusetypeid is 267
-    clean_it = df.loc[df['propertylandusetypeid'] == 271].index
-    df.drop(clean_it , inplace=True)
-    # Remove rows where propertylandusetypeid is 269
-    clean_it = df.loc[df['propertylandusetypeid'] == 274].index
-    df.drop(clean_it , inplace=True)
-    # Remove rows where propertylandusetypeid is less than 260
-    clean_it = df.loc[df['propertylandusetypeid'] > 279].index
-    df.drop(clean_it , inplace=True)
-    return df
-
-def drop_50_pct_null(df):
-    '''This function takes in the zillow df
-    removes all columns and rows with 50% nulls or more
-    returns df'''
-    # Drop columns with 50% or more missing values
-    df = df.dropna(axis = 1, thresh = 0.5 * len(df.index))
-    # went from 67 columns down to 33
-    # drop rows with 50% or more missing vlaues
-    df.dropna(axis = 0, thresh = 0.5 * len(df.columns))
-        # ended up not dropping any rows 
-            # will remain in the function in case anything were to change later on
-    return df
