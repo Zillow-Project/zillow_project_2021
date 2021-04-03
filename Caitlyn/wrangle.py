@@ -82,7 +82,6 @@ def clean_zillow(df):
     today = pd.to_datetime('today')
     df['house_age'] = today.year - df['yearbuilt']
     df['tax_rate'] = df.taxvaluedollarcnt / df.taxamount
-    df['level_of_log_error'] = pd.qcut(df.logerror, q=5, labels=['L1', 'L2', 'L3', 'L4', 'L5'])
     df['acres'] = df.lotsizesquarefeet/43560
     #drop features
     df = df.drop(['propertycountylandusecode', 'propertyzoningdesc', 
@@ -167,9 +166,13 @@ def clean_zillow(df):
     df['lot_sqft_bins'] = (df['lot_sqft_bins']).astype(int)
     # bin acres
     df['acre_bins'] = pd.cut(df.acres, 
-                            bins = [0,25,50,75,100,125,150,175],
+                            bins = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7],
                             labels = [0, 1, 2, 3, 4, 5, 6])
     df['acre_bins'] = (df['acre_bins']).astype(int)
+    # bin log error
+    df['level_of_log_error'] = pd.cut(df.logerror, 
+                            bins = [-5,-1,-.15,.15,1,5],
+                            labels = ['Way Under', 'Under', 'Accurate', 'Over', 'Way Over'])
     return df
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
