@@ -63,6 +63,7 @@ def drop_50_pct_null(df):
 def clean_zillow(df):
     '''This function takes in the df
     applies all the cleaning funcitons previously created
+    creates features
     drops columns
     renames columns'''
     # assuming null value for pool and fireplacecnt means none
@@ -81,7 +82,6 @@ def clean_zillow(df):
     today = pd.to_datetime('today')
     df['house_age'] = today.year - df['yearbuilt']
     df['tax_rate'] = df.taxvaluedollarcnt / df.taxamount
-    df['level_of_log_error'] = pd.qcut(df.logerror, q=5, labels=['L1', 'L2', 'L3', 'L4', 'L5'])
     df['acres'] = df.lotsizesquarefeet/43560
     #drop features
     df = df.drop(['propertycountylandusecode', 'propertyzoningdesc', 
@@ -148,7 +148,7 @@ def clean_zillow(df):
     # set index as parcelid
     df = df.set_index('parcelid')
     # finish dropping
-    df = df.drop(['yearbuilt'], axis=1)
+    df = df.drop(['Unnamed: 0', 'yearbuilt'], axis=1)
     # Handle outliers
     df = df[df.tax_value < 1153326.5]
     df = df[df.square_feet < 4506.0]
@@ -166,9 +166,13 @@ def clean_zillow(df):
     df['lot_sqft_bins'] = (df['lot_sqft_bins']).astype(int)
     # bin acres
     df['acre_bins'] = pd.cut(df.acres, 
-                            bins = [0,25,50,75,100,125,150,175],
+                            bins = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7],
                             labels = [0, 1, 2, 3, 4, 5, 6])
     df['acre_bins'] = (df['acre_bins']).astype(int)
+    # bin log error
+    df['level_of_log_error'] = pd.cut(df.logerror, 
+                            bins = [-5,-1,-.15,.15,1,5],
+                            labels = ['Way Under', 'Under', 'Accurate', 'Over', 'Way Over'])
     return df
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -186,48 +190,6 @@ def split_zillow(df):
                                        random_state=1234)
     return train, validate, test
 
-def train_validate_test_split(df, seed=123):
-    '''
-    This function takes in a dataframe, the name of the target variable
-    (for stratification purposes), and an integer for a setting a seed
-    and splits the data into train, validate and test. 
-    Test is 20% of the original dataset, validate is .30*.80= 24% of the 
-    original dataset, and train is .70*.80= 56% of the original dataset. 
-    The function returns, in this order, train, validate and test dataframes. 
-    '''
-    train_validate, test = train_test_split(df, test_size=0.2, 
-                                            random_state=seed, 
-                                            # stratify=df[target]
-                                           )
-    train, validate = train_test_split(train_validate, test_size=0.3, 
-                                       random_state=seed,
-                                       # stratify=train_validate[target]
-                                      )
-    return train, validate, test
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-def minmax_scale(train, validate, test):
-    
-    # Make the thing
-    scaler = sklearn.preprocessing.MinMaxScaler()
-
-    # We fit on the training data
-    # in a way, we treat our scalers like our ML models
-    # we only .fit on the training data
-    scaler.fit(train)
-    
-    train_scaled = scaler.transform(train)
-    validate_scaled = scaler.transform(validate)
-    test_scaled = scaler.transform(test)
-    
-    # turn the numpy arrays into dataframes
-    train = pd.DataFrame(train_scaled, columns=train.columns)
-    validate = pd.DataFrame(validate_scaled, columns=train.columns)
-    test = pd.DataFrame(test_scaled, columns=train.columns)
-    
-    return train, validate, test
 
 # Split the data into X_train, y_train, X_vlaidate, y_validate, X_train, and y_train
 
@@ -246,7 +208,6 @@ def split_train_validate_test(train, validate, test):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Scale the Data
-
 
 
 def scale_my_data(train, validate, test):
