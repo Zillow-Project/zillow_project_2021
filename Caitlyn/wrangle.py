@@ -156,7 +156,7 @@ def clean_zillow(df):
     # bin some of the large features
     # bin the square feet
     df['square_feet_bins'] = pd.cut(df.square_feet, 
-                            bins = [0,500,1000,1500,2000,2500,3000,3500,4000,4600],
+                            bins = [0,500,1000,1500,2000,2500,3000,3500,4000,6000],
                             labels = [1, 2, 3, 4, 5, 6, 7, 8,9])
     df['square_feet_bins'] = (df['square_feet_bins']).astype(int)
     # bin lot square feet
