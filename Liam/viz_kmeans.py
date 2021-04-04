@@ -10,7 +10,7 @@ from sklearn.datasets.samples_generator import make_blobs
 
 def viz_zillow(train, kmeans):
     
-    centroids = np.array(train.groupby('cluster')['house_age', 'logerror'].mean())
+    centroids = np.array(train.groupby('cluster')['square_feet', 'logerror'].mean())
     cen_x = [i[0] for i in centroids]
     cen_y = [i[1] for i in centroids]
     # cen_x = [i[0] for i in kmeans.cluster_centers_]
@@ -33,13 +33,13 @@ def viz_zillow(train, kmeans):
 
     # plot ax1 
     ax1 = plt.subplot(2,1,1) 
-    sns.scatterplot(data = train, x = 'fips', y = 'logerror', ax = ax1, palette=customPalette)
+    sns.scatterplot(data = train, x = 'square_feet', y = 'logerror', ax = ax1, palette=customPalette)
     plt.title('County')
 
     #plot ax2
     ax2 = plt.subplot(2,1,2) 
-    ax2.scatter(train.fips, train.logerror, c=train.c, alpha = 0.6, s=10)
-    ax2.set(xlabel = 'fips', ylabel = 'logerror', title = 'K - Means')
+    ax2.scatter(train.square_feet, train.logerror, c=train.cluster, alpha = 0.6, s=10)
+    ax2.set(xlabel = 'square_feet', ylabel = 'logerror', title = 'K - Means')
 
     # plot centroids on  ax2
     ax2.scatter(cen_x, cen_y, marker='X', c=colors, s=200)
