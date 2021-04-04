@@ -18,7 +18,7 @@ def viz_zillow(train, kmeans):
     train['cen_x'] = train.cluster.map({0:cen_x[0], 1:cen_x[1], 2:cen_x[2]})
     train['cen_y'] = train.cluster.map({0:cen_y[0], 1:cen_y[1], 2:cen_y[2]})
 
-    colors = ['#DF2020','#2095DF', '#81DF20' ]
+    colors = ['#DF2020','#2095DF', '#81DF20']
     train['c'] = train.cluster.map({0:colors[0], 1:colors[1], 2:colors[2]})
     #plot scatter chart for Actual species and those predicted by K - Means
 
@@ -33,13 +33,13 @@ def viz_zillow(train, kmeans):
 
     # plot ax1 
     ax1 = plt.subplot(2,1,1) 
-    sns.scatterplot(data = train, x = 'house_age', y = 'logerror', ax = ax1, hue = 'has_pool', palette=customPalette)
+    sns.scatterplot(data = train, x = 'fips', y = 'logerror', ax = ax1, palette=customPalette)
     plt.title('County')
 
     #plot ax2
     ax2 = plt.subplot(2,1,2) 
-    ax2.scatter(train.house_age, train.logerror, c=train.c, alpha = 0.6, s=10)
-    ax2.set(xlabel = 'house_age', ylabel = 'logerror', title = 'K - Means')
+    ax2.scatter(train.fips, train.logerror, c=train.c, alpha = 0.6, s=10)
+    ax2.set(xlabel = 'fips', ylabel = 'logerror', title = 'K - Means')
 
     # plot centroids on  ax2
     ax2.scatter(cen_x, cen_y, marker='X', c=colors, s=200)
