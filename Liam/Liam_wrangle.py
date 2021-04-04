@@ -359,3 +359,17 @@ def drop_50_pct_null(df):
         # ended up not dropping any rows 
             # will remain in the function in case anything were to change later on
     return df
+
+# Split the data into X_train, y_train, X_vlaidate, y_validate, X_train, and y_train
+
+def split_train_validate_test(train, validate, test):
+    ''' This function takes in train, validate and test
+    splits them into X and y versions
+    returns X_train, X_validate, X_test, y_train, y_validate, y_test'''
+    X_train = train.drop(columns = ['logerror'])
+    y_train = train.logerror
+    X_validate = validate.drop(columns=['logerror'])
+    y_validate = validate.logerror
+    X_test = test.drop(columns=['logerror'])
+    y_test = test.logerror
+    return X_train, X_validate, X_test, y_train, y_validate, y_test
