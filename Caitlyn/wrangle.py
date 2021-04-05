@@ -121,6 +121,7 @@ def clean_zillow(df):
     df['has_pool'] = df.has_fireplace.replace(0.0, 0)
     # fix unitcnt to int
     df['unitcnt'] = (df['unitcnt'] == True ).astype(int)
+    # fix structure and tx value to int
     # replacing null in quality feature with its median range (6)
     df.quality.fillna(6.0, inplace = True)
     # replacing null in square_feet with its median
