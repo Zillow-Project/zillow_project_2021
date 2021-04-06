@@ -234,7 +234,7 @@ def scale_my_data(train, validate, test):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for longitude_latitude_houseage
 
-def start_taxes_cluster(train, validate, test):
+def start_longitude_latitude_houseage(train, validate, test):
     kmeans = KMeans(n_clusters=5, random_state=123)
     # identify columns we want to cluster on
     cluster_cols = ['latitude', 'longitude', 'house_age']
