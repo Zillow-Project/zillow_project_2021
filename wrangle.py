@@ -1,9 +1,18 @@
 import env
 import pandas as pd
+import numpy as np
 
 import sklearn.preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.cluster import KMeans
+from sklearn.datasets.samples_generator import make_blobs
+
+import matplotlib.pyplot as plt
+from matplotlib import cm
+import seaborn as sns
+
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def get_connection(db, user=env.user, host=env.host, password=env.password):
@@ -198,11 +207,11 @@ def split_train_validate_test(train, validate, test):
     splits them into X and y versions
     returns X_train, X_validate, X_test, y_train, y_validate, y_test'''
     X_train = train.drop(columns = ['logerror'])
-    y_train = train.logerror
+    y_train = pd.DataFrame(train.logerror)
     X_validate = validate.drop(columns=['logerror'])
-    y_validate = validate.logerror
+    y_validate = pd.DataFrame(validate.logerror)
     X_test = test.drop(columns=['logerror'])
-    y_test = test.logerror
+    y_test = pd.DataFrame(test.logerror)
     return X_train, X_validate, X_test, y_train, y_validate, y_test
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -337,3 +346,27 @@ def prep_quality_houseage_roomcount_clusters(some_dataframe):
     some_dataframe = predict_cluster_quality_houseage_roomcount(some_dataframe)
     some_dataframe = get_dummy_quality_houseage_roomcount_cluster(some_dataframe)
     return some_dataframe
+
+def focused_zillow(train, validate, test):
+    '''
+    takes in train
+    sets sepecific features to focus on
+    returns a focused data frame in a pandas dataframe
+    '''
+    # choose features to focus on
+    features = [
+    'logerror',
+    'latitude',
+    'longitude',
+    'Ventura',
+    'North LA',
+    'low_structure_and_land_tax',
+    'medium_structure_low_land_tax',
+    'house quality = 0',
+    'Newer Homes High Quality',
+    'Older Homes High Quality'] # the target
+    # return a df based only on these features
+    train = train[features]
+    validate = validate[features]
+    test = test[features]
+    return train, validate, test
