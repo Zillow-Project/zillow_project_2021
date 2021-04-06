@@ -101,39 +101,37 @@ ___
     
 | Attribute | Definition | Data Type |
 | ----- | ----- | ----- |
-| tax_value | The total tax assessed value of the parcel | float  |
+| acres  |  How many acres the property has | float |     
+| acre_bins |  How many acres the property has binned | category |    
 | bathrooms | Number of bathrooms in home including fractional bathrooms | float |
 | bedrooms | Number of bedrooms in home | float |
 | city |   City in which the property is located (if any) | float |
 | county |   County in which the property is located) | float |
 | fips |   Federal Information Processing Standard code -  see https://en.wikipedia.org/wiki/FIPS_county_code for more details | float |
-| house_age | year_built minus current year | int |
-| latitude | Latitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |
-| longitude | Longitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |
-| square_feet | Calculated total finished living area of the home | float |
-| taxamount	|  The total property tax assessed for that assessment year | int |
-| untcnt |   Number of units the structure is built into (i.e. 2 = duplex, 3 = triplex, etc...) | int |
-| has_heating_system |  If the house has a heating system or not | int |
-| land_type |  Type of land use the property is zoned for | float |
-| quality |   Overall assessment of condition of the building from best (lowest) to worst (highest) | float |
+| full_bathrooms |  Number of full bathrooms (sink, shower + bathtub, and toilet) present in home | int |    
 | has_fireplace |  If the house has a fireplace or not | int |
-| full_bathrooms |  Number of full bathrooms (sink, shower + bathtub, and toilet) present in home | int |
-| lot_square_feet |   Area of the lot in square feet | float |
-| has_pool |  If the house has a pool or not | float |
-| room_count |  Total number of rooms in the principal residence | float |
-| structure_tax_value |  The assessed value of the built structure on the parcel | float |
-| land_tax_value | The assessed value of the land area of the parcel  | float |
-| logerror* |  The log of the zestimate minus actual sold price of house | float |    
+| has_heating_system |  If the house has a heating system or not | int |
+| has_pool |  If the house has a pool or not | float |    
+| house_age | year_built minus current year | int |
 | in_los_angeles |  If the house is in Los Angeles or not | int |
 | in_orange_county |  If the house is in Orange County or not | int |    
 | in_ventura |  If the house is in Ventura or not | int |
-| tax_rate |  Rate of tax in the area | float |   
+| land_tax_value | The assessed value of the land area of the parcel  | float |    
+| land_type |  Type of land use the property is zoned for | float |
+| latitude | Latitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |
 | level_of_log_error |  The log of the zestimate minus actual sold price of house binned| category |
-| acres  |  How many acres the property has | float |       
-| square_feet_bins |  Calculated total finished living area of the home binned | int | 
-| lot_sqft_bins |  Area of the lot in square feet binned. | int |     
-| acre_bins |  How many acres the property has binned | int |    
- 
+| logerror* |  The log of the zestimate minus actual sold price of house | float |    
+| longitude | Longitude of the middle of the parcel multiplied by 10<sup>6</sup> | float |    
+| lot_square_feet |   Area of the lot in square feet | float |    
+| lot_sqft_bins |  Area of the lot in square feet binned. | category |       
+| quality |   Overall assessment of condition of the building from best (lowest) to worst (highest) | float | | room_count |  Total number of rooms in the principal residence | float |   
+| structure_tax_value |  The assessed value of the built structure on the parcel | float |    
+| square_feet | Calculated total finished living area of the home | float |
+| square_feet_bins |  Calculated total finished living area of the home binned | category | 
+| taxamount	|  The total property tax assessed for that assessment year | int | 
+| tax_rate |  Rate of tax in the area | float |  
+| tax_value | The total tax assessed value of the parcel | float  |
+| untcnt |   Number of units the structure is built into (i.e. 2 = duplex, 3 = triplex, etc...) | int |
 
     
 \*  Indicates the target feature in this Zillow data.
@@ -190,7 +188,11 @@ ___
   <summary>Click to expand!</summary>
     
 - wrangle.py 
-​
+
+### Findings:
+- 
+    
+    
 | Function Name | Definition |
 | ------------ | ------------- |
 | select_kbest | This function takes in a dataframe, the target feature as a string, and an interger (k) that must be less than or equal to the number of features and returns the (k) best features |
