@@ -148,7 +148,7 @@ def clean_zillow(df):
     # set index as parcelid
     df = df.set_index('parcelid')
     # finish dropping
-    df = df.drop(['Unnamed: 0', 'yearbuilt'], axis=1)
+    df = df.drop(['yearbuilt'], axis=1)
     # Handle outliers
     df = df[df.tax_value < 1153326.5]
     df = df[df.square_feet < 4506.0]
