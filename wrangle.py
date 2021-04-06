@@ -234,6 +234,19 @@ def scale_my_data(train, validate, test):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for longitude_latitude_houseage
 
+def start_taxes_cluster(train, validate, test):
+    kmeans = KMeans(n_clusters=5, random_state=123)
+    # identify columns we want to cluster on
+    cluster_cols = ['latitude', 'longitude', 'house_age']
+    # clustering on train, getting the cetnoids
+    kmeans = kmeans.fit(train[cluster_cols])
+    # identifying clusters in train
+    train['longitude_latitude_houseage_cluster'] = kmeans.predict(train[cluster_cols])
+    # identifying clusters in validate, test
+    validate['longitude_latitude_houseage_cluster'] = kmeans.predict(validate[cluster_cols])
+    test['longitude_latitude_houseage_cluster'] = kmeans.predict(test[cluster_cols])
+    return train, validate, test
+
 def predict_cluster_longitude_latitude_houseage(some_dataframe):
     some_dataframe['longitude_latitude_houseage_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
     return some_dataframe
@@ -256,6 +269,19 @@ def prep_longitude_latitude_houseage_clusters(some_dataframe):
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for taxes_cluster
 
+def start_taxes_cluster(train, validate, test):
+    kmeans = KMeans(n_clusters=6, random_state=123)
+    # identify columns we want to cluster on
+    cluster_cols = ['structure_tax_value', 'land_tax_value']
+    # clustering on train, getting the cetnoids
+    kmeans = kmeans.fit(train[cluster_cols])
+    # identifying clusters in train
+    train['taxes_cluster'] = kmeans.predict(train[cluster_cols])
+    # identifying clusters in validate, test
+    validate['taxes_cluster'] = kmeans.predict(validate[cluster_cols])
+    test['taxes_cluster'] = kmeans.predict(test[cluster_cols])
+    return train, validate, test
+
 def predict_cluster_taxes(some_dataframe):
     some_dataframe['taxes_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
     return some_dataframe
@@ -276,6 +302,19 @@ def prep_taxes_clusters(some_dataframe):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for quality_houseage_roomcount
+
+def start_quality_houseage_cluster(train, validate, test):
+    kmeans = KMeans(n_clusters=5, random_state=123)
+    # identify columns we want to cluster on
+    cluster_cols = ['quality', 'house_age', 'room_count']
+    # clustering on train, getting the cetnoids
+    kmeans = kmeans.fit(train[cluster_cols])
+    # identifying clusters in train
+    train['quality_houseage_roomcount_cluster'] = kmeans.predict(train[cluster_cols])
+    # identifying clusters in validate, test
+    validate['quality_houseage_roomcount_cluster'] = kmeans.predict(validate[cluster_cols])
+    test['quality_houseage_roomcount_cluster'] = kmeans.predict(test[cluster_cols])
+    return train, validate, test
 
 def predict_cluster_quality_houseage_roomcount(some_dataframe):
     some_dataframe['quality_houseage_roomcount_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
