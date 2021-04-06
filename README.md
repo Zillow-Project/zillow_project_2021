@@ -397,5 +397,8 @@ What would you do with more time?
 Anything else of note worth adding? Add it here.
 </details>  
 
+![Folder Contents](https://github.com/Zillow-Project/zillow_project_2021/blob/main/Caitlyn/photos/Screen%20Shot%202021-04-01%20at%205.57.59%20PM.png?raw=true)
+
+
 >>>>>>>>>>>>>>>
 .
