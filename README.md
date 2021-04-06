@@ -59,9 +59,10 @@ ___
     - Conclude results
         
 ### Hypothesis
-- Living in Los Angeles may be causing log error because of majorly different economic standings within the area.
-- Latitude and Longitude are drivers of log error because one home may be in the hills, another may be on the coast, another may be in the dessert.
-- Homes with heating systems are drivers of log error, because normally it is important but in southern California it is just nice to have but not a necessity.
+- The stuctures age effects log error because a homes age may make someone think that it is of lower quality but it may have been refurbished causeing a under valued home.
+- Latitude and Longitude are drivers of log error because regions may be a higher priced area versus another.
+- A homes quality is probably effecctiing logerror because homes with a lower quality may be being priced way undervalued.
+- Tax vlaues may be affecting logerror because not all home prices are directly correlated to tax values. Although it is affects the price it does not lead to an exact number.
 
 ### Target variable
 - logerror
@@ -74,16 +75,67 @@ ___
 
 <details>
   <summary>Click to expand!</summary>
-​
+
 ### Explore:
-- What are your key findings from explore?
+- We learned:
+    - We have 46,416 accurate home values and 4,791 which are inaccurate.
+        - Only about 9.36% are innacurate overall.
+    - Reading percentages:
+        - Accurate Percentages (between -.15 and 0.15)
+            - ~69% in Los Angeles
+            - ~23% in Oragne County
+            - ~8% in Ventura
+        - Over Percentages (between 0.15 and 1)
+            - ~75% in Los Angeles
+            - ~18% in Oragne County
+            - ~7% in Ventura
+        - Way Under Percentages (between -1 and -5)
+            - ~67% in Los Angeles
+            - ~12% in Oragne County
+            - ~21% in Ventura
+        - Under Percentages (between -0.15 and -1)
+            - ~81% in Los Angeles
+            - ~14% in Oragne County
+            - ~5% in Ventura
+        - Way Over Percentages (between 1 and 5)
+            - ~52% in Los Angeles
+            - ~38% in Oragne County
+            - ~10% in Ventura
+    - For the quality house age cluster we found that the majority of way under valued homes comes from home with a quality of 0.
+    - The majority of over valued homes are older and of lower quality.
+    - Homes with a low to medium structure tax value and a low land tax value tend to have a higher logerror than other homes.
+    - North Downtown LA have no homes that have no undervalued homes.
+    - Overall North Downtown LA has lowest logerror out of all areas in Southern Claifornia
+    - Homes in Ventura are more often overvalued compared to their surrounding areas.
+    
+    
+**Please note that LA has a significantly higher home population than both Orange county and Ventura**
+
+
 ​
 ​
 ### Stats
-- What are your key findings from stats?
-​
+- Stat Test: Land and Structure Taxes
+    - Anova Test:
+        - Showed that there was a difference between log error of at least one of the 6 cluster created.
+    - T Testing:
+        - Showed that the homes with low to medium amount of structure with low land tax value have a correlation to what is effecting our log error.
+- Stats test: Latitude, Longitude, and House Age
+    - Anova Test:
+        - Shows that there is a difference between the log error of at least one of the 5 clusters created.
+    - T Testing:
+        - Showed that Ventura and North Downtown LA were the most significant when it came to log error.
+- Stats test: Quality, House Age, Room Count
+    - Anova Test:
+        - Shows that there is a difference between the log error of at least one of the 5 clusters created.
+    - T Testing:
+        - Showed that when a homes quality equaled zero, newer homes with higher quality, and older homes with high quality had a relationship to logerror compared to others.
+
 ### Modeling:
-- Model results?
+- So our model performed better than the baseline.
+    - Our R Squared OLS Baseline performed at a -0.004585 compared to our OLS R Squared score of 0.0000516.
+        - You may be saying "Wow thats not that great"
+            - BUT, relativly speaking it is a decent find. Because we are looking at log error, our goal is to be as close to 0 as we can.
 ​
 ​
 ***
@@ -218,67 +270,128 @@ ___
 <details>
   <summary>Click to expand!</summary>
 
-​
+
 ### Stats Test 1:
- - What is the test?
- - Why use this test?
- - What is being compared?
-​
+- What is the test?
+    - Anova
+- Why use this test?
+    - Find out if a cluster has significance to the logerror
+- What is being compared?
+    - Quality, house age, and room count
+
 #### Hypothesis:
-- The null hypothesis (H<sub>0</sub>) is... 
+- The null hypothesis (H<sub>0</sub>) is...
+    - There is no difference between the log error means of each individual cluster
 - The alternate hypothesis (H<sub>1</sub>) is ...
-​
-​
+    - There is a difference between the log error means of at least one clusters.
+
+
 #### Confidence level and alpha value:
 - I established a 95% confidence level
 - alpha = 1 - confidence, therefore alpha is 0.05
-​
+
 #### Results:
- - Results of statistical tests
-​
- - Summary:
-     - In depth take-a-ways from the results
-​
-### Stats Test 2 
- - What is the test?
- - Why use this test?
- - What is being compared?
-​
+- Reject the null
+- move forward with Alternative Hypothesis 
+
+- Summary:
+    - F score of:
+        - 4.478
+    - P vlaue of:
+        - 0.0012
+
+### Stats Test 2: 
+- What is the test?
+    - T Test
+- Why use this test?
+    - To find statistical differences between the means of 2 or more clusters
+- What is being compared?
+    - Winning cluster of Latittude, Longitude, and House Age Anova Test
+
+#### Results:
+ - House quality = 0, old homes with high Quality, and new homes with high quality were affecting logerror to a degree.
+
+### Stats Test 3:
+- What is the test?
+    - Anova
+- Why use this test?
+    - Find out if a cluster has significance to the logerror
+- What is being compared?
+    - Structure tax value and land tax value
+
 #### Hypothesis:
-- The null hypothesis (H<sub>0</sub>) is... 
+- The null hypothesis (H<sub>0</sub>) is...
+    - There is no difference between the log error means of each individual cluster
 - The alternate hypothesis (H<sub>1</sub>) is ...
-​
-​
+    - There is a difference between the log error means of at least one clusters.
+
+
 #### Confidence level and alpha value:
 - I established a 95% confidence level
 - alpha = 1 - confidence, therefore alpha is 0.05
-​
+
 #### Results:
- - Results of statistical tests
-​
- - Summary:
-     - In depth take-a-ways from the results
-​
-### Stats Test 3
- - What is the test?
- - Why use this test?
- - What is being compared?
-​
+- Reject the null
+- move forward with Alternative Hypothesis 
+
+- Summary:
+    - F score of:
+        - 5.3376
+    - P vlaue of:
+        - 6.587e-05
+
+### Stats Test 4: 
+- What is the test?
+    - T Test
+- Why use this test?
+    - To find statistical differences between the means of 2 or more clusters
+- What is being compared?
+    - Winning cluster of taxes
+
+#### Results:
+ - Homes with low to medium structure tax value and low land tax value affect logerror to some degree.
+    
+
+### Stats Test 5:
+- What is the test?
+    - Anova
+- Why use this test?
+    - Find out if a cluster has significance to the logerror
+- What is being compared?
+    - Latitude, Longitude, and House age
+
 #### Hypothesis:
-- The null hypothesis (H<sub>0</sub>) is... 
+- The null hypothesis (H<sub>0</sub>) is...
+    - There is no difference between the log error means of each individual cluster
 - The alternate hypothesis (H<sub>1</sub>) is ...
-​
-​
+    - There is a difference between the log error means of at least one clusters.
+
+
 #### Confidence level and alpha value:
 - I established a 95% confidence level
 - alpha = 1 - confidence, therefore alpha is 0.05
-​
+
 #### Results:
- - Results of statistical tests
-​
- - Summary:
-     - In depth take-a-ways from the results
-​
+- Reject the null
+- move forward with Alternative Hypothesis 
+
+- Summary:
+    - F score of:
+        - 6.6776
+    - P vlaue of:
+        - 0.000228
+
+### Stats Test 2: 
+- What is the test?
+    - T Test
+- Why use this test?
+    - To find statistical differences between the means of 2 or more clusters
+- What is being compared?
+    - Winning cluster of Latittude, Longitude, and House Age Anova Test
+
+#### Results:
+ - Ventura, and North Downtown LA had an impact on log error.
+    
 ***
 ​
     
@@ -288,113 +401,125 @@ ___
 [[Back to top](#top)]
 <details>
   <summary>Click to expand!</summary>
-​
+
 Summary of modeling choices...
-​
+
 ### Baseline
-​
-​
-- What is the first step?
-    
-```json
-{
-Input code here if you want...
-}
-```
-- Next Step:
-​
-```json
-{
-Code...
-}
-```
-​
+
 - Baseline Results: 
-    - What are the numbers we are trying to beat with our model.
+    - Median In sample = 0.16
+    - Median Out of sample = 0.15
         
-***
-​
 ### Models and R<sup>2</sup> Values:
 - Will run the following models:
-    - Model 1
-        - brief summary of what the model does.
-    - Model 2 
-        - brief summary of what the model does.
-    - etc.
-​
-- Other indicators of model performance with breif defiition and why it's important:
-    - R<sup>2</sup> Value is the coefficient of determination, pronounced "R squared", is the proportion of the variance in the dependent variable that is predictable from the independent variable. 
-    - Essentially it is a statistical measure of how close the data are to the fitted regression line.
-#### Model 1:
-​
-```json 
-{
-Model 1 code:
-}
-```
-- Model 1 results:
-    - Metric for Model 1:
-        - Training/In-Sample:  **Results**
-        - Validation/Out-of-Sample:  **Results**
-    - Other metrics: (R<sup>2</sup> Value = )
-​
-​
-### Model 2 :
-​
-```json 
-{
-Model 2 code:
-}
-```
-- Model 2 results:
-    - Metric for Model 1:
-        - Training/In-Sample:  **Results**
-        - Validation/Out-of-Sample:  **Results**
-    - Other metrics: (R<sup>2</sup> Value = )
-​
-​
+    - Linear regression OLS Model
+    - Lasso Lars
+    - Tweedie Regressor
+    - Polynomail Degree 2
+    - Ploynomial Degree 3
+
+- Other indicators of model performance
+    - R<sup>2</sup> Baseline Value
+        - -0.004585
+    - R<sup>2</sup> OLS Value 
+        - 0.00005159
+
+
+
+### RMSE using Mean
+    
+Train/In-Sample:  0.16 
+    
+Validate/Out-of-Sample:  0.15
+    
+
+### RMSE using Median
+Train/In-Sample:  0.16 
+Validate/Out-of-Sample:  0.15
+
+### RMSE for OLS using LinearRegression
+    
+Training/In-Sample:  0.15698193096987265 
+    
+Validation/Out-of-Sample:  0.1518694361646674
+    
+
+### RMSE for Lasso + Lars
+    
+Training/In-Sample:  0.012348907010552293 
+    
+Validation/Out-of-Sample:  0.011532822479710627
+    
+
+    
+### RMSE for GLM using Tweedie, power=0 and alpha=0
+    
+Training/In-Sample:  0.01234045919349956 
+    
+Validation/Out-of-Sample:  0.011536767590909373
+    
+
+    
+### RMSE for Polynomial Model, degrees=2
+    
+Training/In-Sample:  0.012288891953326782 
+    
+Validation/Out-of-Sample:  0.011543443686491118
+    
+
+    
+### RMSE for Polynomial Model, degrees=3
+    
+Training/In-Sample:  0.012288891953326782 
+    
+Validation/Out-of-Sample:  0.011543443686491118
+
+
 ### Eetc:
-​
+
 ## Selecting the Best Model:
-​
+
 ### Use Table below as a template for all Modeling results for easy comparison:
-​
+
 | Model | Training/In Sample RMSE | Validation/Out of Sample RMSE | R<sup>2</sup> Value |
 | ---- | ----| ---- | ---- |
-| Baseline | 271194.48 | 272149.78 | -2.1456 x 10<sup>-5</sup> |
-| Linear Regression | 217503.9051 | 220468.9564 | 0.3437 |
-| Tweedie Regressor (GLM) | 217516.6069 | 220563.6468 | 0.3432 |
-| Lasso Lars | 217521.8752 | 220536.3882 | 0.3433 |
-| Polynomial Regression | 211227.5585 | 214109.6968 | 0.3810 |
-​
+| Baseline | 0.16  | 0.15 | -0.004585 |
+| Linear Regression |  0.15698193096987265  | 0.1518694361646674 | 0.00005159 |
+| Tweedie Regressor (GLM) | 0.01234045919349956  | 0.011536767590909373 | n/a |
+| Lasso Lars | 0.012348907010552293  | 0.011532822479710627 | n/a |
+| Polynomial Regression D2| 0.012288891953326782  | 0.011543443686491118 | n/a |
+| Polynomial Regression D3| 0.012288891953326782  | 0.011543443686491118 | n/a |
+
 - Why did you choose this model?
-- 
-​
+    - It was closer to 0 than our baseline.
+
 ## Testing the Model
-```json
-{
-Model Testing Code...
-}
-```
+
 - Model Testing Results
-     - Out-of-Sample Performance:  **Results**
-​
-​
+     - Out-of-Sample Performance:  0.1518694361646674
+
+
 ***
-​
+
 </details>  
 
 ## <a name="conclusion"></a>Conclusion:
 [[Back to top](#top)]
 <details>
   <summary>Click to expand!</summary>
-​
+
 Reiterate explore findings, statistical analysis, and modeling take-a-ways
-​
+
 What could be done to improve the model?
+    - Further explore combinations of features and their affects on log error.
+    - Look deeper into longitude and latitude and their geographical locations of the homes.
+    - Look into the structure and land tax value further by looking at tax ratios.
+    
 What would you do with more time? 
-​
-Anything else of note worth adding? Add it here.
+    - Look into the structure and land tax value further by looking at tax ratios
+    - Are there any smaller clusters in latitude and longitude that may be affecting log error more specifically.
+    
+
 </details>  
 
 ![Folder Contents](https://github.com/Zillow-Project/zillow_project_2021/blob/main/Caitlyn/photos/ScreenShot2021-04-06at12.52.26PM.png?raw=true)
