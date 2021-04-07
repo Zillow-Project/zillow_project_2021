@@ -10,6 +10,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 
+from sklearn.metrics import mean_squared_error, r2_score, explained_variance_score
+from statsmodels.formula.api import ols
+from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.feature_selection import f_regression 
+
 import wrangle
 
 import warnings
@@ -279,3 +285,102 @@ def OLS_Model(X_train, y_train, X_validate, y_validate):
         # make sure you are using x_validate an not x_train
     print("RMSE for OLS using LinearRegression\nTraining/In-Sample: ", rmse_train_lm,
           "\nValidation/Out-of-Sample: ", rmse_validate_lm)
+    
+def plot_the_OLS(X_train, X_validate, X_test, y_train, y_validate, y_test):
+    y_train = pd.DataFrame(y_train)
+        # turn it into a single pandas dataframe
+    y_validate = pd.DataFrame(y_validate)
+        # wrap them as dataframes
+    # 1. Predict logerror_pred_mean
+        # 2 different aselines of mean and medium
+    logerror_pred_mean = y_train['logerror'].mean()
+    y_train['logerror_pred_mean'] = logerror_pred_mean
+    y_validate['logerror_pred_mean'] = logerror_pred_mean
+    # 2. compute logerror_pred_median
+        # same process as mean (above)
+    logerror_pred_median = y_train['logerror'].median()
+    y_train['logerror_pred_median'] = logerror_pred_median
+    y_validate['logerror_pred_median'] = logerror_pred_median
+    # 3. RMSE of logerror_pred_mean
+    rmse_train_mean = mean_squared_error(y_train.logerror, 
+                                         y_train.logerror_pred_mean)**(1/2)
+        # stick with root mean square error
+            # not your only option but that is what we will be using here
+                # just because it is eaiest to us and explain
+        # remember when you call you it will be your y_true and y_pred
+    rmse_validate_mean = mean_squared_error(y_validate.logerror, 
+                                            y_validate.logerror_pred_mean)**(1/2)
+    lm = LinearRegression(normalize=True)
+    # fit the model to our training data. We must specify the column in y_train, 
+    # since we have converted it to a dataframe from a series! 
+    lm.fit(X_train, y_train.logerror)
+        # just call y_train.actual_target
+    # predict train
+    y_train['logerror_pred_lm'] = lm.predict(X_train)
+    # evaluate: rmse
+    rmse_train_lm = mean_squared_error(y_train.logerror, y_train.logerror_pred_lm)**(1/2)
+    # predict validate
+    y_validate['logerror_pred_lm'] = lm.predict(X_validate)
+    # evaluate: rmse
+    rmse_validate_lm = mean_squared_error(y_validate.logerror, y_validate.logerror_pred_lm)**(1/2)
+    plt.figure(figsize=(20,10))
+    sns.set(style="darkgrid")
+    plt.scatter(y_validate.logerror, y_validate.logerror_pred_lm,
+                alpha=.5, color="mediumblue", s=100, label="Model: LinearRegression")
+    m, b = np.polyfit(y_validate.logerror, y_validate.logerror_pred_lm, 1)
+    plt.plot(y_validate.logerror, m*y_validate.logerror+b, color='limegreen', label='Line of Regrssion', linewidth=5)
+    plt.plot(y_validate.logerror, y_validate.logerror_pred_median, alpha=.5, color="black", label='Baseline', linewidth=5)
+    plt.plot(y_validate.logerror, y_validate.logerror, alpha=.5, color="grey", label='The Ideal Line: Predicted = Actual', linewidth=5)
+    plt.title('Model: LinearRegression')
+
+def OLS_hist(X_train, y_train, X_validate, y_validate):
+    y_train = pd.DataFrame(y_train)
+        # turn it into a single pandas dataframe
+    y_validate = pd.DataFrame(y_validate)
+        # wrap them as dataframes
+    # 1. Predict logerror_pred_mean
+        # 2 different aselines of mean and medium
+    logerror_pred_mean = y_train['logerror'].mean()
+    y_train['logerror_pred_mean'] = logerror_pred_mean
+    y_validate['logerror_pred_mean'] = logerror_pred_mean
+    # 2. compute logerror_pred_median
+        # same process as mean (above)
+    logerror_pred_median = y_train['logerror'].median()
+    y_train['logerror_pred_median'] = logerror_pred_median
+    y_validate['logerror_pred_median'] = logerror_pred_median
+    # 3. RMSE of logerror_pred_mean
+    rmse_train_mean = mean_squared_error(y_train.logerror, 
+                                         y_train.logerror_pred_mean)**(1/2)
+        # stick with root mean square error
+            # not your only option but that is what we will be using here
+                # just because it is eaiest to us and explain
+        # remember when you call you it will be your y_true and y_pred
+    rmse_validate_mean = mean_squared_error(y_validate.logerror, 
+                                            y_validate.logerror_pred_mean)**(1/2)
+    lm = LinearRegression(normalize=True)
+    # fit the model to our training data. We must specify the column in y_train, 
+    # since we have converted it to a dataframe from a series! 
+    lm.fit(X_train, y_train.logerror)
+        # just call y_train.actual_target
+    # predict train
+    y_train['logerror_pred_lm'] = lm.predict(X_train)
+    # evaluate: rmse
+    rmse_train_lm = mean_squared_error(y_train.logerror, y_train.logerror_pred_lm)**(1/2)
+    # predict validate
+    y_validate['logerror_pred_lm'] = lm.predict(X_validate)
+    # evaluate: rmse
+    rmse_validate_lm = mean_squared_error(y_validate.logerror, y_validate.logerror_pred_lm)**(1/2)
+    # make sure you are using x_validate an not x_train
+    plt.subplots(1, 2, figsize=(15,8), sharey=True)
+    sns.set(style="darkgrid")
+    plt.title("Comparing the Distribution of appraised_values to Distributions of Predicted appraised_values for the Top Models")
+    plt.xlabel("Logerror", size = 15)
+    plt.ylabel("appraised_value Count", size = 15)
+
+    plt.subplot(1,2,1)
+    plt.hist(y_validate.logerror, color='darkgreen', ec='black', alpha=.5, bins=50)
+    plt.title('Actual Logerror', size=15)
+
+    plt.subplot(1,2,2)
+    plt.hist(y_validate.logerror, color='mediumblue', alpha=.5,  ec='black', bins=50)
+    plt.title('Model: LinearRegression', size=15)
