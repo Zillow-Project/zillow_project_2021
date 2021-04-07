@@ -105,7 +105,7 @@ ___
     - The majority of over valued homes are older and of lower quality.
     - Homes with a low to medium structure tax value and a low land tax value tend to have a higher logerror than other homes.
     - North Downtown LA have no homes that have no undervalued homes.
-    - Overall North Downtown LA has lowest logerror out of all areas in Southern Claifornia
+    - Overall North Downtown LA has lowest logerror out of all areas in Southern California
     - Homes in Ventura are more often overvalued compared to their surrounding areas.
     
     
