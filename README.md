@@ -505,16 +505,18 @@ Validation/Out-of-Sample:  0.011543443686491118
 <details>
   <summary>Click to expand!</summary>
 
-Reiterate explore findings, statistical analysis, and modeling take-a-ways
+We found that only about 9.36% of log error was inaccurate. Meaning that it was below -0.15 or above 0.15 rendering it inaccurate.
 
-What could be done to improve the model?
-    - Further explore combinations of features and their affects on log error.
-    - Look deeper into longitude and latitude and their geographical locations of the homes.
-    - Look into the structure and land tax value further by looking at tax ratios.
-    
-What would you do with more time? 
-    - Look into the structure and land tax value further by looking at tax ratios
-    - Are there any smaller clusters in latitude and longitude that may be affecting log error more specifically.
+This gave us a small amount to work with. But in the end we were able to create a model to find certain drivers of the inaccurate log error.
+Our model performed better than the baseline by a decent amount. With a R baseline of ~-0.0046 and our model performing at ~0.000052. Meaning we were able to get closer to 0 than our baseline.
+
+We found that Ventura, north downtown LA, tax values, home quality, and a homes age affect loerror within their resepective cluster.
+
+With further time we would like to look further into geographical location and tax values to see if there is a more specific reason for log error.
+
+We recommend using our OLS model to be used within the field, in order to establish a closer zestimate score to what the selling price may be, in order to service our custoemrs even better.
+
+
     
 
 </details>  
