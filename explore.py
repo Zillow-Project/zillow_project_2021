@@ -261,7 +261,7 @@ def get_dum_and_plot2(train):
                    palette='viridis')
     
     
-def OLS_Model(X_train, y_train, X_validate, y_validate)
+def OLS_Model(X_train, y_train, X_validate, y_validate):
     # create the model object
     lm = LinearRegression(normalize=True)
     # fit the model to our training data. We must specify the column in y_train,
