@@ -256,58 +256,56 @@ def start_longitude_latitude_houseage(train, validate, test):
     test['longitude_latitude_houseage_cluster'] = kmeans.predict(test[cluster_cols])
     return train, validate, test
 
-def predict_cluster_longitude_latitude_houseage(some_dataframe):
-    some_dataframe['longitude_latitude_houseage_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
-    return some_dataframe
+def predict_cluster_longitude_latitude_houseage(train, validate, test):
+    train, validate, test['longitude_latitude_houseage_cluster'] = kmeans.predict(train, validate, test)[cluster_cols]
+    return train, validate, test
 
-def get_dummy_longitude_latitude_houseage_cluster(some_dataframe):
-    dummy_df =  pd.get_dummies(some_dataframe['longitude_latitude_houseage_cluster'])
+def get_dummy_longitude_latitude_houseage_cluster(train, validate, test):
+    dummy_df =  pd.get_dummies(train, validate, test)['longitude_latitude_houseage_cluster']
     dummy_df.columns = ['Ventura', 'Orange County', 
                     'North downtown LA', 'East downtown LA', 
                     'North LA']
-    some_dataframe = pd.concat([some_dataframe, dummy_df], axis=1)
-    some_dataframe = some_dataframe.drop(['Orange County', 'East downtown LA', 
+    train, validate, test = pd.concat([train, validate, test, dummy_df], axis=1)
+    train, validate, test = train, validate, test.drop(['Orange County', 'East downtown LA', 
                     'North downtown LA', 'longitude_latitude_houseage_cluster'], axis=1)
-    return some_dataframe
+    return train, validate, test
 
-def prep_longitude_latitude_houseage_clusters(some_dataframe):
-    some_dataframe = predict_cluster_longitude_latitude_houseage(some_dataframe)
-    some_dataframe = get_dummy_longitude_latitude_houseage_cluster(some_dataframe)
-    return some_dataframe
+def prep_longitude_latitude_houseage_clusters(train, validate, test):
+    train, validate, test = predict_cluster_longitude_latitude_houseage(train, validate, test)
+    train, validate, test = get_dummy_longitude_latitude_houseage_cluster(train, validate, test)
+    return train, validate, test
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for taxes_cluster
 
-def start_taxes_cluster(train, validate, test):
-    kmeans = KMeans(n_clusters=6, random_state=123)
+
+def predict_cluster_taxes(train, validate, test):
     # identify columns we want to cluster on
     cluster_cols = ['structure_tax_value', 'land_tax_value']
+    kmeans = KMeans(n_clusters=6, random_state=123)
     # clustering on train, getting the cetnoids
     kmeans = kmeans.fit(train[cluster_cols])
-    # identifying clusters in train
+    kmeans = kmeans.fit(validate[cluster_cols])
+    kmeans = kmeans.fit(test[cluster_cols])
+    
     train['taxes_cluster'] = kmeans.predict(train[cluster_cols])
-    # identifying clusters in validate, test
     validate['taxes_cluster'] = kmeans.predict(validate[cluster_cols])
     test['taxes_cluster'] = kmeans.predict(test[cluster_cols])
     return train, validate, test
 
-def predict_cluster_taxes(some_dataframe):
-    some_dataframe['taxes_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
-    return some_dataframe
-
-def get_dummy_taxes_cluster(some_dataframe):
-    dummy_df =  pd.get_dummies(some_dataframe['taxes_cluster'])
+def get_dummy_taxes_cluster(train, validate, test):
+    dummy_df =  pd.get_dummies(train, validate, test)['taxes_cluster']
     dummy_df.columns = ['low_structure_and_land_tax', 'drop1',
                         'drop2', 'medium_structure_low_land_tax', 
                         'drop4', 'drop5']
-    some_dataframe = pd.concat([some_dataframe, dummy_df], axis=1)
-    some_dataframe = some_dataframe.drop(['drop1', 'drop2', 'drop4', 'drop5', 'taxes_cluster'], axis=1)
-    return some_dataframe
+    train, validate, test = pd.concat([train, validate, test, dummy_df], axis=1)
+    train, validate, test = train, validate, test.drop(['drop1', 'drop2', 'drop4', 'drop5', 'taxes_cluster'], axis=1)
+    return train, validate, test
 
-def prep_taxes_clusters(some_dataframe):
-    some_dataframe = predict_cluster_taxes(some_dataframe)
-    some_dataframe = get_dummy_taxes_cluster(some_dataframe)
-    return some_dataframe
+def prep_taxes_clusters(train, validate, test):
+    train, validate, test = predict_cluster_taxes(train, validate, test)
+    train, validate, test = get_dummy_taxes_cluster(train, validate, test)
+    return train, validate, test
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for quality_houseage_roomcount
@@ -325,27 +323,27 @@ def start_quality_houseage_cluster(train, validate, test):
     test['quality_houseage_roomcount_cluster'] = kmeans.predict(test[cluster_cols])
     return train, validate, test
 
-def predict_cluster_quality_houseage_roomcount(some_dataframe):
-    some_dataframe['quality_houseage_roomcount_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
-    return some_dataframe
+def predict_cluster_quality_houseage_roomcount(train, validate, test):
+    train, validate, test['quality_houseage_roomcount_cluster'] = kmeans.predict(train, validate, test)[cluster_cols]
+    return train, validate, test
 
-def get_dummy_quality_houseage_roomcount_cluster(some_dataframe):
-    dummy_df =  pd.get_dummies(some_dataframe['quality_houseage_roomcount_cluster'])
+def get_dummy_quality_houseage_roomcount_cluster(train, validate, test):
+    dummy_df =  pd.get_dummies(train, validate, test)['quality_houseage_roomcount_cluster']
     dummy_df.columns = ['house quality = 0', 
                     'Older homes low quality', 
                     'Younger homes avg. quality', 
                     'Newer Homes High Quality', 
                     'Older Homes High Quality']
-    some_dataframe = pd.concat([some_dataframe, dummy_df], axis=1)
-    some_dataframe = some_dataframe.drop(['Older homes low quality', 
+    train, validate, test = pd.concat([train, validate, test, dummy_df], axis=1)
+    train, validate, test = train, validate, test.drop(['Older homes low quality', 
                     'Younger homes avg. quality', 
                     'quality_houseage_roomcount_cluster'], axis=1)
-    return some_dataframe
+    return train, validate, test
 
-def prep_quality_houseage_roomcount_clusters(some_dataframe):
-    some_dataframe = predict_cluster_quality_houseage_roomcount(some_dataframe)
-    some_dataframe = get_dummy_quality_houseage_roomcount_cluster(some_dataframe)
-    return some_dataframe
+def prep_quality_houseage_roomcount_clusters(train, validate, test):
+    train, validate, test = predict_cluster_quality_houseage_roomcount(train, validate, test)
+    train, validate, test = get_dummy_quality_houseage_roomcount_cluster(train, validate, test)
+    return train, validate, test
 
 def focused_zillow(train, validate, test):
     '''
