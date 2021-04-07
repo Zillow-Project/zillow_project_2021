@@ -111,24 +111,21 @@ ___
     
 **Please note that LA has a significantly higher home population than both Orange county and Ventura**
 
-
-​
-​
 ### Stats
 - Stat Test: Land and Structure Taxes
-    - Anova Test:
+    - **Anova Test**:
         - Showed that there was a difference between log error of at least one of the 6 cluster created.
-    - T Testing:
+    - **T-Testing**:
         - Showed that the homes with low to medium amount of structure with low land tax value have a correlation to what is effecting our log error.
 - Stats test: Latitude, Longitude, and House Age
-    - Anova Test:
+    - **Anova Test**:
         - Shows that there is a difference between the log error of at least one of the 5 clusters created.
-    - T Testing:
+    - **T-Testing**:
         - Showed that Ventura and North Downtown LA were the most significant when it came to log error.
 - Stats test: Quality, House Age, Room Count
-    - Anova Test:
+    - **Anova Test**:
         - Shows that there is a difference between the log error of at least one of the 5 clusters created.
-    - T Testing:
+    - **T-Testing**:
         - Showed that when a homes quality equaled zero, newer homes with higher quality, and older homes with high quality had a relationship to logerror compared to others.
 
 ### Modeling:
@@ -136,10 +133,10 @@ ___
     - Our R Squared OLS Baseline performed at a -0.004585 compared to our OLS R Squared score of 0.0000516.
         - You may be saying "Wow thats not that great"
             - BUT, relativly speaking it is a decent find. Because we are looking at log error, our goal is to be as close to 0 as we can.
-​
-​
+
+
 ***
-​
+
     
 </details>
 
