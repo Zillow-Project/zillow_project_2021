@@ -384,3 +384,36 @@ def OLS_hist(X_train, y_train, X_validate, y_validate):
     plt.subplot(1,2,2)
     plt.hist(y_validate.logerror, color='mediumblue', alpha=.5,  ec='black', bins=50)
     plt.title('Model: LinearRegression', size=15)
+    
+
+def get_taxes_hist(train):
+    dummy_df =  pd.get_dummies(train['taxes_cluster'])
+    dummy_df.columns = ['zero', 'one', 'two', 'three', 'four', 'five']
+    train = pd.concat([train, dummy_df], axis=1)
+    # Plot the clusters
+    plt.figure(figsize=(20, 36))
+    plt.subplot(3,2,1)
+    plt.title("% of Logerror for High Structure & Land Tax", size=20, color='black')
+    sns.barplot(y=train.zero, x='level_of_log_error', data=train,
+                   palette='viridis')
+    plt.subplot(3,2,2)
+    plt.title("% of Logerror for Low Structure & Medium Land Tax", size=20, color='black')
+    sns.barplot(y=train.one, x='level_of_log_error', data=train,
+                   palette='viridis')
+    plt.subplot(3,2,3)
+    plt.title("% of Logerror for High Land Tax & Medium Structure Tax", size=20, color='black')
+    sns.barplot(y=train.two, x='level_of_log_error', data=train,
+                   palette='viridis')
+    plt.subplot(3,2,4)
+    plt.title("% of Logerror for Lowest Structure & Land Tax", size=20, color='black')
+    sns.barplot(y=train.three, x='level_of_log_error', data=train,
+                   palette='viridis')
+    plt.subplot(3,2,5)
+    plt.title("% of Logerror for Medium Structure & Low Land Tax", size=20, color='black')
+    sns.barplot(y=train.four, x='level_of_log_error', data=train,
+                   palette='viridis')
+ 
+    plt.subplot(3,2,6)
+    plt.title("% of Logerror for Low Structure & Land Tax", size=20, color='black')
+    sns.barplot(y=train.four, x='level_of_log_error', data=train,
+                   palette='viridis')
