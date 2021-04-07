@@ -112,15 +112,15 @@ def get_dum_and_plot(train):
     # Plot the clusters
     plt.figure(figsize=(20, 36))
     plt.subplot(3,2,1)
-    plt.title("Percents of Each Log Error Level for Homeq = 0", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for Older Homes High Quality", size=20, color='black')
     sns.barplot(y=df.zero, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,2)
-    plt.title("Percents of Each Log Error Level Older Homes Low Quality", size=20, color='black')
+    plt.title("Percents of Each Log Error Level Home Quality = 0", size=20, color='black')
     sns.barplot(y=df.one, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,3)
-    plt.title("Percents of Each Log Error Level Younger Homes Avg. Quality", size=20, color='black')
+    plt.title("Percents of Each Log Error Level Older Homes Low Quality", size=20, color='black')
     sns.barplot(y=df.two, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,4)
@@ -128,7 +128,7 @@ def get_dum_and_plot(train):
     sns.barplot(y=df.three, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,5)
-    plt.title("Percents of Each Log Error Level Older Homes High Quality", size=20, color='black')
+    plt.title("Percents of Each Log Error Level Younger Homes Avg. Quality", size=20, color='black')
     sns.barplot(y=df.four, x='level_of_log_error', data=df,
                    palette='viridis')
     
@@ -240,23 +240,23 @@ def get_dum_and_plot2(train):
     # Plot the clusters
     plt.figure(figsize=(20, 32))
     plt.subplot(3,2,1)
-    plt.title("Percents of Each Log Error Level for Ventura", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for East LA", size=20, color='black')
     sns.barplot(y=df.zero, x='level_of_log_error', data=df,
                   palette='viridis')
     plt.subplot(3,2,2)
-    plt.title("Percents of Each Log Error Level for Orange County", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for North Downtown LA", size=20, color='black')
     sns.barplot(y=df.one, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,3)
-    plt.title("Percents of Each Log Error Level for North downtown LA", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for Ventura County", size=20, color='black')
     sns.barplot(y=df.two, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,4)
-    plt.title("Percents of Each Log Error Level for East downtown LA", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for North LA", size=20, color='black')
     sns.barplot(y=df.three, x='level_of_log_error', data=df,
                    palette='viridis')
     plt.subplot(3,2,5)
-    plt.title("Percents of Each Log Error Level for North LA", size=20, color='black')
+    plt.title("Percents of Each Log Error Level for Orange County", size=20, color='black')
     sns.barplot(y=df.four, x='level_of_log_error', data=df,
                    palette='viridis')
     

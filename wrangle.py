@@ -1,10 +1,9 @@
 import pandas as pd
-<<<<<<< HEAD
+
 import env
-=======
+
 import numpy as np
 
->>>>>>> 581528e98f6b885669ecca3fa025f54c47d09b4d
 import sklearn.preprocessing
 from sklearn.cluster import KMeans
 from sklearn.model_selection import train_test_split

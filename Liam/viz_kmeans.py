@@ -118,8 +118,6 @@ def prep_taxes_clusters(some_dataframe):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # for quality_houseage_roomcount
-
-def start_quality_houseage_cluster(train, validate, test):
     kmeans = KMeans(n_clusters=5, random_state=123)
     # identify columns we want to cluster on
     cluster_cols = ['quality', 'house_age', 'room_count']
@@ -130,7 +128,6 @@ def start_quality_houseage_cluster(train, validate, test):
     # identifying clusters in validate, test
     validate['quality_houseage_roomcount_cluster'] = kmeans.predict(validate[cluster_cols])
     test['quality_houseage_roomcount_cluster'] = kmeans.predict(test[cluster_cols])
-    return train, validate, test
 
 def predict_cluster_quality_houseage_roomcount(some_dataframe):
     some_dataframe['quality_houseage_roomcount_cluster'] = kmeans.predict(some_dataframe[cluster_cols])
