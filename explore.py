@@ -33,17 +33,17 @@ def log_error_deep_dive(train):
     sns.set(style="darkgrid")
 
     plt.subplot(1,3,1)
-    plt.title("Percents of Each Log Error Level in LA", size=20, color='black')
+    plt.title("% of Logerror in LA", size=20, color='black')
     sns.barplot(y='in_los_angeles', x='level_of_log_error', data=train,
                    palette='viridis')
 
     plt.subplot(1,3,2)
-    plt.title("Percents of Each Log Error Level in Orange County", size=20, color='black')
+    plt.title("% of Logerror in Orange County", size=20, color='black')
     sns.barplot(y='in_orange_county', x='level_of_log_error', data=train,
                    palette='viridis')
 
     plt.subplot(1,3,3)
-    plt.title("Percents of Each Log Error Level in Ventura", size=20, color='black')
+    plt.title("% of Logerror in Ventura", size=20, color='black')
     sns.barplot(y='in_ventura', x='level_of_log_error', data=train,
                    palette='viridis')
     
@@ -104,7 +104,7 @@ def quality_age_room_count_relplot(train):
     kmeans.cluster_centers_
     centroids_scaled = pd.DataFrame(kmeans.cluster_centers_, columns = X.columns)
     # scatter plot of data with hue for cluster
-    sns.relplot(x = 'house_age', y= 'quality', data = X_scaled, col = X_scaled.quality_houseage_roomcount_cluster, col_wrap = 2, hue = train.level_of_log_error, palette='viridis_r')
+    sns.relplot(x = 'house_age', y= 'quality', data = X_scaled, col = X_scaled.quality_houseage_roomcount_cluster, col_wrap = 3, hue = train.level_of_log_error, palette='viridis_r')
     # plot cluster centers (centroids)
     # centroids_scaled.plot.scatter(x = 'age', y = 'annual_income', ax = plt.gca(), color = 'k', alpha = 0.3, s = 500, marker = 'o',)
     plt.show();
@@ -116,38 +116,41 @@ def get_dum_and_plot(train):
     dummy_df.columns = ['zero', 'one', 'two', 'three', 'four']
     df = pd.concat([train, dummy_df], axis=1)
     # Plot the clusters
-    plt.figure(figsize=(20, 36))
-    plt.subplot(3,2,1)
-    plt.title("Percents of Each Log Error Level for Older Homes High Quality", size=20, color='black')
+    plt.figure(figsize=(20, 13))
+    plt.subplot(2,3,1)
+    plt.title("% of Logerror for Old High Quality", size=20, color='black')
     sns.barplot(y=df.zero, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,2)
-    plt.title("Percents of Each Log Error Level Home Quality = 0", size=20, color='black')
+    plt.subplot(2,3,2)
+    plt.title("% of Logerror for Quality=0", size=20, color='black')
     sns.barplot(y=df.one, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,3)
-    plt.title("Percents of Each Log Error Level Older Homes Low Quality", size=20, color='black')
+    plt.subplot(2,3,3)
+    plt.title("% of Logerror for Old Low Quality", size=20, color='black')
     sns.barplot(y=df.two, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,4)
-    plt.title("Percents of Each Log Error Level Newer Homes High Quality", size=20, color='black')
+    plt.subplot(2,3,4)
+    plt.title("% of Logerror for New High Quality", size=20, color='black')
     sns.barplot(y=df.three, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,5)
-    plt.title("Percents of Each Log Error Level Younger Homes Avg. Quality", size=20, color='black')
+    plt.subplot(2,3,5)
+    plt.title("% of Logerror for Young Avg. Quality", size=20, color='black')
     sns.barplot(y=df.four, x='level_of_log_error', data=df,
                    palette='viridis')
+    
+    
+    
     
 def closer_tax_plot(train):
     plt.subplots(1, 2, figsize=(25,8), sharey=True)
     sns.set(style="darkgrid")
 
     plt.subplot(1,2,1)
-    plt.title("Percents of Each Log Error Level in LA", size=20, color='black')
+    plt.title("% of Logerror in LA", size=20, color='black')
     sns.scatterplot(x = train.structure_tax_value, y = train.logerror, hue = train.level_of_log_error, palette='viridis')
 
     plt.subplot(1,2,2)
-    plt.title("Percents of Each Log Error Level in Orange County", size=20, color='black')
+    plt.title("% of Logerror in Orange County", size=20, color='black')
     sns.scatterplot(x = train.land_tax_value, y = train.logerror, hue = train.level_of_log_error, palette='viridis')
  
 
@@ -187,7 +190,7 @@ def taxes_relplot(train):
     # scatter plot of data with hue for cluster
     sns.relplot(x='structure_tax_value', y='land_tax_value', 
                 data = train, col = train.taxes_cluster, 
-                col_wrap = 2, hue = train.level_of_log_error, 
+                col_wrap = 3, hue = train.level_of_log_error, 
                palette='viridis_r')
     # plot cluster centers (centroids)
     # centroids_scaled.plot.scatter(x = 'age', y = 'annual_income', ax = plt.gca(), color = 'k', alpha = 0.3, s = 500, marker = 'o',)
@@ -235,7 +238,7 @@ def lat_long_relplot(train):
     centroids_scaled = pd.DataFrame(kmeans.cluster_centers_, columns = X.columns)
     # Plot the clusers in relplot
     plt.figure(figsize=(14, 9))
-    sns.relplot(x = 'longitude', y= 'latitude', data = X_scaled, col = X_scaled.longitude_latitude_houseage_cluster, col_wrap = 2, hue = train.level_of_log_error, palette='viridis')
+    sns.relplot(x = 'longitude', y= 'latitude', data = X_scaled, col = X_scaled.longitude_latitude_houseage_cluster, col_wrap = 3, hue = train.level_of_log_error, palette='viridis')
     plt.show();
 
 
@@ -244,25 +247,25 @@ def get_dum_and_plot2(train):
     dummy_df.columns = ['zero', 'one', 'two', 'three', 'four']
     df = pd.concat([train, dummy_df], axis=1)
     # Plot the clusters
-    plt.figure(figsize=(20, 32))
-    plt.subplot(3,2,1)
-    plt.title("Percents of Each Log Error Level for East LA", size=20, color='black')
+    plt.figure(figsize=(20, 13))
+    plt.subplot(2,3,1)
+    plt.title("% of Logerror for East LA", size=20, color='black')
     sns.barplot(y=df.zero, x='level_of_log_error', data=df,
                   palette='viridis')
-    plt.subplot(3,2,2)
-    plt.title("Percents of Each Log Error Level for North Downtown LA", size=20, color='black')
+    plt.subplot(2,3,2)
+    plt.title("% of Logerror for North Downtown LA", size=20, color='black')
     sns.barplot(y=df.one, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,3)
-    plt.title("Percents of Each Log Error Level for Ventura County", size=20, color='black')
+    plt.subplot(2,3,3)
+    plt.title("% of Logerror for Ventura County", size=20, color='black')
     sns.barplot(y=df.two, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,4)
-    plt.title("Percents of Each Log Error Level for North LA", size=20, color='black')
+    plt.subplot(2,3,4)
+    plt.title("% of Logerror for North LA", size=20, color='black')
     sns.barplot(y=df.three, x='level_of_log_error', data=df,
                    palette='viridis')
-    plt.subplot(3,2,5)
-    plt.title("Percents of Each Log Error Level for Orange County", size=20, color='black')
+    plt.subplot(2,3,5)
+    plt.title("% of Logerror for Orange County", size=20, color='black')
     sns.barplot(y=df.four, x='level_of_log_error', data=df,
                    palette='viridis')
     
@@ -371,7 +374,7 @@ def OLS_hist(X_train, y_train, X_validate, y_validate):
     # evaluate: rmse
     rmse_validate_lm = mean_squared_error(y_validate.logerror, y_validate.logerror_pred_lm)**(1/2)
     # make sure you are using x_validate an not x_train
-    plt.subplots(1, 2, figsize=(15,8), sharey=True)
+    plt.subplots(1, 2, figsize=(8,8), sharey=True)
     sns.set(style="darkgrid")
     plt.title("Comparing the Distribution of appraised_values to Distributions of Predicted appraised_values for the Top Models")
     plt.xlabel("Logerror", size = 15)
@@ -391,29 +394,29 @@ def get_taxes_hist(train):
     dummy_df.columns = ['zero', 'one', 'two', 'three', 'four', 'five']
     train = pd.concat([train, dummy_df], axis=1)
     # Plot the clusters
-    plt.figure(figsize=(20, 36))
-    plt.subplot(3,2,1)
+    plt.figure(figsize=(20, 13))
+    plt.subplot(2,3,1)
     plt.title("% of Logerror for High Structure & Land Tax", size=20, color='black')
     sns.barplot(y=train.zero, x='level_of_log_error', data=train,
                    palette='viridis')
-    plt.subplot(3,2,2)
+    plt.subplot(2,3,2)
     plt.title("% of Logerror for Low Structure & Medium Land Tax", size=20, color='black')
     sns.barplot(y=train.one, x='level_of_log_error', data=train,
                    palette='viridis')
-    plt.subplot(3,2,3)
+    plt.subplot(2,3,3)
     plt.title("% of Logerror for High Land Tax & Medium Structure Tax", size=20, color='black')
     sns.barplot(y=train.two, x='level_of_log_error', data=train,
                    palette='viridis')
-    plt.subplot(3,2,4)
+    plt.subplot(2,3,4)
     plt.title("% of Logerror for Lowest Structure & Land Tax", size=20, color='black')
     sns.barplot(y=train.three, x='level_of_log_error', data=train,
                    palette='viridis')
-    plt.subplot(3,2,5)
+    plt.subplot(2,3,5)
     plt.title("% of Logerror for Medium Structure & Low Land Tax", size=20, color='black')
     sns.barplot(y=train.four, x='level_of_log_error', data=train,
                    palette='viridis')
  
-    plt.subplot(3,2,6)
+    plt.subplot(2,3,6)
     plt.title("% of Logerror for Low Structure & Land Tax", size=20, color='black')
     sns.barplot(y=train.four, x='level_of_log_error', data=train,
                    palette='viridis')
